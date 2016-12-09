@@ -1,0 +1,57 @@
+{
+  "name": "R Web Tools",  
+  "version": "1.3.0",
+  "manifest_version": 2,
+  "description": "The Chrome Extension by DSI-Web Redoute",
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
+  "homepage_url": "http://www.laredoute.fr",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "browser_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "R Web Tools",
+    "default_popup": "src/browser_action/browser_action.html"
+  },
+  "permissions": [
+    "cookies",
+    "http://gedeho.com/*",
+    "*://*.laredoute.fr/*",
+    "*://*.laredoute.be/*",
+    "*://*.laredoute.ch/*",
+    "*://*.laredoute.es/*",
+    "*://*.laredoute.pt/*",
+    "*://*.laredoute.pl/*",
+    "*://*.laredoute.it/*",
+    "*://*.laredoute.co.uk/*",
+    "*://*.laredoute.se/*",
+    "*://*.laredoute.no/*",
+    "*://*.laredoute.com/*",
+    "*://*.laredoute.ru/*",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches":[
+        "http://gedeho.com/*",
+        "*://*.laredoute.fr/*",
+        "*://*.laredoute.be/*",
+        "*://*.laredoute.ch/*",
+        "*://*.laredoute.es/*",
+        "*://*.laredoute.pt/*",
+        "*://*.laredoute.pl/*",
+        "*://*.laredoute.it/*",
+        "*://*.laredoute.co.uk/*",
+        "*://*.laredoute.se/*",
+        "*://*.laredoute.no/*",
+        "*://*.laredoute.com/*",
+        "*://*.laredoute.ru/*"
+      ],
+      "js": ["src/inject/jquery.min.js", "src/inject/inject.js"], 
+      "css" : ["src/inject/gdo.css"]
+    }
+  ]  
+}

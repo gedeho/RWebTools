@@ -1,0 +1,24 @@
+.vstyle{
+	font-size:11px;
+	color:#2a72fb;
+	background:#fff;
+	width:auto;
+	height:auto;
+	text-indent:initial;
+	position:absolute;
+	z-index:999;
+	border-radius:0;
+	line-height:initial;
+	border:1px solid #555;
+	
+}
+
+.vstyle.size{
+	margin-top:-6px;
+	margin-left:-17px;
+}
+
+.vstyle.color{
+	display:block !important;
+	margin-top:-11px;
+}
