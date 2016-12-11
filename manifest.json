@@ -53,5 +53,9 @@
       "js": ["src/inject/jquery.min.js", "src/inject/inject.js"], 
       "css" : ["src/inject/gdo.css"]
     }
-  ]  
+  ],
+  "background": {
+    "scripts": ["src/bg/eventPage.js"],
+    "persistent": false
+  }
 }
