@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
         gdoGetCookieValue();
         // Toggle the "show decli" button in PDP :
         if(tabs[0].url.indexOf('ppdp/prod') !=-1) $('#showdcli').css('display', 'inline-block');
+
+        // Get Search Datas :
+        gdoSendMessage('getDOM');
     });  
 
     $('#showdcli').click(function(){gdoSendMessage("showdcli");});
@@ -59,6 +62,14 @@ function gdoSendMessage(value){
         chrome.tabs.sendMessage(tabs[0].id, {greeting: value}, function(response) {
             //console.log(response.farewell);
             if(response.serverName) $('.serverName span').text(response.farewell);
+            if(response.dom) displaySearchDatas(response);
         });
     });
 }
+
+function displaySearchDatas(datas){
+    $('.ssid-info').text(datas.ssid);
+    $('.sskey-info').text(datas.sskey);
+}
+
+
