@@ -21,10 +21,24 @@ chrome.runtime.onMessage.addListener(
 				sendResponse({serverName:true, farewell:gdoSName['wa_data.server']});
 				break;
 
+			case "getDOM" :
+				sendResponse({dom:true, ssid:gdoGetSsid(), sskey:gdoGetSskey()});
+				break
+
 			default :
 				sendResponse({farewell: "Demande non reconnue"});
 		}
 });
+
+// Get SSID :
+function gdoGetSsid(){
+	return $('#crb-ssid').text();
+}
+
+// Get SSID :
+function gdoGetSskey(){
+	return $('#crb-sskey').text();
+}
 
 // affichage des valeurs de déclis en PDP :
 function displayDims(){
@@ -64,16 +78,3 @@ function retrieveWindowVariables(variables) {
     return ret;
 }
 
-
-
-// chrome.extension.sendMessage({}, function(response) {
-// 	var readyStateCheckInterval = setInterval(function() {
-// 	if (document.readyState === "complete") {
-// 		clearInterval(readyStateCheckInterval);
-// 		// console.log('hello from injected script')
-// 		// ----------------------------------------------------------
-// 		// This part of the script triggers when page is done loading
-// 		// console.log("Hello. This message was sent from scripts/inject.js");
-// 	}
-// 	}, 10);
-// });
