@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Toggle the "show decli" button in PDP :
         if(tabs[0].url.indexOf('ppdp/prod') !=-1) $('#showdcli').css('display', 'inline-block');
 
+        // TODO :
+        // Display the search section on psrch pages only
+
         // Get Search Datas :
         gdoSendMessage('getDOM');
     });  
