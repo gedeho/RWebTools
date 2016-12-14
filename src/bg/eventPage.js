@@ -8,6 +8,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 	console.log('updated ! '+tab.url);
 	chrome.tabs.query({active:true, currentWindow:true}, function(tabs){
 		toogleBrowserAction(tabs[0]);
+
+		
+		
 	});
 });
 
@@ -25,3 +28,6 @@ function toogleBrowserAction(tab){
 		chrome.browserAction.disable(tab.id);
 	}
 }
+
+
+
