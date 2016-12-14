@@ -1,5 +1,7 @@
 var gdoCookieName   = "ABRkg";
+var gdoSerchCookieName = "ABSearchStrategy";
 var gdoCurrentRkgSegment;
+var gdoCurrentSrchSegment;
 var gdoCurrentUrl;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,12 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // get Server Name :
         gdoSendMessage("getServerName");
         // Get Ranking Cookie :
-        gdoGetCookieValue();
+        gdoGetCookieValue(gdoCookieName, '#toggleRkgCookie');
+        gdoGetCookieValue(gdoSerchCookieName, '#toggleSrchCookie');
         // Toggle the "show decli" button in PDP :
         if(tabs[0].url.indexOf('ppdp/prod') !=-1) $('#showdcli').css('display', 'inline-block');
-
-        // TODO :
-        // Display the search section on psrch pages only
 
         // Get Search Datas :
         gdoSendMessage('getDOM');
@@ -25,24 +25,67 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#clbskt').click(function(){gdoSendMessage("clearBasket");});   
 });
 
-function gdoGetCookieValue(){
-    chrome.cookies.get({url:gdoCurrentUrl, name:gdoCookieName}, function(cookie){ 
-        if(cookie){
-            gdoCurrentRkgSegment = cookie.value;
-            var toggleValue = (cookie.value == "a") ? "on" : "off";
-            $('#toggleRkgCookie').bootstrapToggle(toggleValue);
-            $("#toggleRkgCookie").change(function(){
-                gdoCurrentRkgSegment = (gdoCurrentRkgSegment == "a") ? "b" :"a";
-                gdoChangeRkgCookie(gdoCurrentRkgSegment);
-            });
-        }else{$('.rankingToggle').hide();}  
+// function gdoGetCookieValue(){
+//     chrome.cookies.get({url:gdoCurrentUrl, name:gdoCookieName}, function(cookie){ 
+//         if(cookie){
+//             gdoCurrentRkgSegment = cookie.value;
+//             var toggleValue = (cookie.value == "a") ? "on" : "off";
+//             $('#toggleRkgCookie').bootstrapToggle(toggleValue);
+//             $("#toggleRkgCookie").change(function(){
+//                 gdoCurrentRkgSegment = (gdoCurrentRkgSegment == "a") ? "b" :"a";
+//                 gdoChangeRkgCookie(gdoCurrentRkgSegment);
+//             });
+//         }else{$('.rankingToggle').hide();}  
+//     });
+// }
+
+
+function gdoGetCookieValue(cookieName, toggleButtonName){
+    chrome.cookies.get({url:gdoCurrentUrl, name:cookieName}, function(cookie){ 
+
+if(cookie){
+    currentSegmentName = cookie.value;
+        var toggleValue = (cookie.value == "a") ? "on" : "off";
+        $(toggleButtonName).bootstrapToggle(toggleValue);
+        $(toggleButtonName).change(function(){
+            currentSegmentName = (currentSegmentName == "a") ? "b" :"a";
+            gdoChangeRkgCookie(cookieName, currentSegmentName);
+            $('.ssid-info').text("---");
+    $('.sskey-info').text("---");
+
+
+       });
+
+}
+
+else{
+    if(cookieName==gdoCookieName){
+        $('.rankingToggle').hide();
+    }
+    if(cookieName==gdoSerchCookieName){
+        console.log('change cookie')
+        gdoChangeRkgCookie(cookieName, 'b');
+        $('.ssid-info').text("---");
+    $('.sskey-info').text("---");
+
+    }
+}
+
+
+
+        
     });
 }
 
-function gdoChangeRkgCookie(value){    
+
+
+
+
+
+function gdoChangeRkgCookie(cookieName, value){    
         var t = new Date();
         t.setMonth(t.getMonth()+1);        
-        chrome.cookies.set({url:gdoCurrentUrl, name:gdoCookieName, value:value, expirationDate:t.getTime()});
+        chrome.cookies.set({url:gdoCurrentUrl, name:cookieName, value:value, expirationDate:t.getTime()});
         chrome.tabs.query({active:true, currentWindow: true}, function(tab){
             chrome.tabs.reload(tab.id);
     });
@@ -74,5 +117,6 @@ function displaySearchDatas(datas){
     $('.ssid-info').text(datas.ssid);
     $('.sskey-info').text(datas.sskey);
 }
+
 
 
