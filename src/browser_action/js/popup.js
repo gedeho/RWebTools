@@ -3,25 +3,33 @@ var gdoSerchCookieName = "ABSearchStrategy";
 var gdoCurrentRkgSegment;
 var gdoCurrentSrchSegment;
 var gdoCurrentUrl;
+var ID;
 
 document.addEventListener('DOMContentLoaded', function() {
 
     chrome.tabs.query({active:true, currentWindow: true}, function(tabs){
         // Get Current URL :     
         gdoCurrentUrl = gdoGetBaseURL(tabs);
+        
         // get Server Name :
         gdoSendMessage("getServerName");
         // Get Ranking Cookie :
         gdoGetCookieValue(gdoCookieName, '#toggleRkgCookie');
         gdoGetCookieValue(gdoSerchCookieName, '#toggleSrchCookie');
         // Toggle the "show decli" button in PDP :
+        
         if(tabs[0].url.indexOf('ppdp/prod') !=-1) $('#showdcli').css('display', 'inline-block');
+        
+        if(tabs[0].url.indexOf('pplp') !=-1) $('#showdocid').css('display', 'inline-block');
+        
+        if(tabs[0].url.indexOf('psrch/psrch') !=-1) $('#showdocid').css('display', 'inline-block');
 
         // Get Search Datas :
         gdoSendMessage('getDOM');
     });  
 
     $('#showdcli').click(function(){gdoSendMessage("showdcli");});
+    $('#showdocid').click(function(){gdoSendMessage("showdocid");});
     $('#clbskt').click(function(){gdoSendMessage("clearBasket");});   
 });
 
@@ -40,22 +48,23 @@ document.addEventListener('DOMContentLoaded', function() {
 // }
 
 
-function gdoGetCookieValue(cookieName, toggleButtonName){
-    chrome.cookies.get({url:gdoCurrentUrl, name:cookieName}, function(cookie){ 
 
+function gdoGetCookieValue(cookieName, toggleButtonName){
+
+
+    chrome.cookies.get({url:gdoCurrentUrl, name:cookieName}, function(cookie){ 
 if(cookie){
-    currentSegmentName = cookie.value;
-        var toggleValue = (cookie.value == "a") ? "on" : "off";
+   		 currentSegmentName = cookie.value.substr(cookie.value.length-1,1);
+   		 currentCookieKW = cookie.value.substr(0,cookie.value.length-1);
+   		 var toggleValue = (currentSegmentName == "a") ? "on" : "off";
         $(toggleButtonName).bootstrapToggle(toggleValue);
         $(toggleButtonName).change(function(){
             currentSegmentName = (currentSegmentName == "a") ? "b" :"a";
-            gdoChangeRkgCookie(cookieName, currentSegmentName);
+            gdoChangeRkgCookie(cookieName, currentCookieKW+currentSegmentName);
             $('.ssid-info').text("---");
-    $('.sskey-info').text("---");
-
-
-       });
-
+		    $('.sskey-info').text("---");
+   		 
+   		});
 }
 
 else{
@@ -70,8 +79,6 @@ else{
 
     }
 }
-
-
 
         
     });
