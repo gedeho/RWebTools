@@ -9,6 +9,11 @@ chrome.runtime.onMessage.addListener(
 				sendResponse({farewell: "Déclis affichées"});
 				break;
 
+			case "showdocid" :
+				displayDocid();
+				sendResponse({farewell: "Docid affichées"});
+				break;
+
 			case "clearBasket" :
 				$.ajax({url: '/clearcache.aspx?cachetype=shoppingbasket'}).done(function() {	
 					document.location.reload();
@@ -49,6 +54,13 @@ function displayDims(){
 	});
 	$('.product .set-colour li').each(function(){
 		$(this).append(' <span class="vstyle color">'+$(this).attr('data-variant')+'</span>');
+	});
+}
+
+// affichage des valeurs de déclis en PDP :
+function displayDocid(){
+	$('.plpList-divMain .product-list article').each(function(){
+		$(this).append(' <span class="vstyle docid">'+$(this).attr('data-documentid')+'</span>');
 	});
 }
 
